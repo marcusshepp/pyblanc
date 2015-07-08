@@ -10,7 +10,7 @@
 >>> print averge_cs
 35.5 
 
->>> from pyblanc import LeagueFile
+>>> from pyblanc import LeagueTimelineFile
 >>> cls = LeagueTimelineFile(summoner='bar', api_key='foo', path_to_data="path_str")
 >>> cls.stats_to_file() # files are named "datetime.date.today().json"
 >>> cls.timeline_cspermin() 
