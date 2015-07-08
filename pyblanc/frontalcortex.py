@@ -96,8 +96,8 @@ class LeagueStat(League):
     """
      
     def get_stat(self, game_number, stat_name):
-        """ Returns a stat """
-        parsed = self.match_history_request(marcusshep)
+        """ Returns a `stat`. """
+        parsed = self.match_history_request(self.summoner)
         return parsed['matches'][game_number]['participants'][0]['stats'][stat_name]
         
     def all_minions_killed(self):
@@ -128,7 +128,7 @@ class LeagueStat(League):
         return math.ceil(num_of_lose/num_of_wins)
     
     def get_champion_id(self, game_number):
-        parsed = self.match_history_request(marcusshep)
+        parsed = self.match_history_request(self.summoner)
         return parsed['matches'][game_number]['participants'][0]['championId']
     
     def all_champion_ids(self):
@@ -154,7 +154,7 @@ class LeagueTimelineFile(LeagueFile):
 
     def timeline_request(self, game_number, stat_name, *args, **kwargs):
         """ Returns the `timeline` data, type: dict. """
-        parsed = self.match_history_request(marcusshep)
+        parsed = self.match_history_request(self.summoner)
         return parsed['matches'][game_number]['participants'][0]['timeline'][stat_name]    
 
     def timeline_file(self, stat_name, *args, **kwargs):
@@ -183,7 +183,7 @@ class LeagueTimelineFile(LeagueFile):
         a, pika = self.timeline_file("creepsPerMinDeltas"), {}
         if time_value:
             for i, j in a.iteritems():
-                for num in range(len(i))
+                for num in range(len(i)):
                     pika[i] = a[i][time_value]
                     return pika # {game_num: cs}
         return a

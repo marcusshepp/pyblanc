@@ -6,7 +6,7 @@
 
 >>> from pyblanc import LeagueStat
 >>> cls = LeagueStat(summoner='foo', api_key='bar')
->>> averge_cs = cls.averge_cs()
+>>> average_cs = cls.average_cs()
 >>> print averge_cs
 35.5 
 
