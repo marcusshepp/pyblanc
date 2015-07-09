@@ -6,6 +6,8 @@ from datetime import date
 
 import numpy as np
 
+import util
+
 
 class League(object):
 
@@ -15,28 +17,28 @@ class League(object):
     """
 
     api_key = ""
-    summoner = ""
+    summoner = 0
 
     def __init__(self, api_key, summoner):
         """ Initialize obj with debug = False """
         self.api_key = api_key
-        self.summoner = summoner
+        self.summoner += summoner
 
     def __unicode__(self):
         """ Useful for displaying `LeagueStats` as on obj. """
         return u"PyBlanc object instance. Summoner: {}".format(self.summoner)
 
     @staticmethod
-    def get_request(url, api_key=api_key):
-        url += "?api_key={0}".format(api_key)
+    def get_request(url, api_key):
+        url += "?api_key={0}".format(self.api_key)
         request = urll.urlopen(url)
         parsed = json.loads(request.read())
         return parsed
 
     @classmethod
-    def match_history_request(self, summoner):
+    def match_history_request(self):
         """ Makes a request to League servers and returns parsed JSON data."""
-        url = "https://na.api.pvp.net/api/lol/na/v2.2/matchhistory/{0}".format(summoner)
+        url = "https://na.api.pvp.net/api/lol/na/v2.2/matchhistory/{0}".format(self.summoner)
         return self.get_request(url)
 
     def champion_list(self):
@@ -71,7 +73,7 @@ class LeagueFile(League):
     
     def stats_to_file(self, relative_path, file_name):
         """ Writes match history to a file in a given location. """
-        parsed, file_name = self.match_history_request(self.summoner), date.today()
+        parsed, file_name = self.match_history_request(), date.today()
         complete_path = os.path.abspath("{0}{1}.json".format(relative_path, file_name))
         if os.path.isfile(complete_path):
             file_name = "{}-duplicate".format(date.today())
@@ -97,7 +99,7 @@ class LeagueStat(League):
      
     def get_stat(self, game_number, stat_name):
         """ Returns a `stat`. """
-        parsed = self.match_history_request(self.summoner)
+        parsed = self.match_history_request()
         return parsed['matches'][game_number]['participants'][0]['stats'][stat_name]
         
     def all_minions_killed(self):
@@ -128,7 +130,7 @@ class LeagueStat(League):
         return math.ceil(num_of_lose/num_of_wins)
     
     def get_champion_id(self, game_number):
-        parsed = self.match_history_request(self.summoner)
+        parsed = self.match_history_request()
         return parsed['matches'][game_number]['participants'][0]['championId']
     
     def all_champion_ids(self):
@@ -154,7 +156,7 @@ class LeagueTimelineFile(LeagueFile):
 
     def timeline_request(self, game_number, stat_name, *args, **kwargs):
         """ Returns the `timeline` data, type: dict. """
-        parsed = self.match_history_request(self.summoner)
+        parsed = self.match_history_request()
         return parsed['matches'][game_number]['participants'][0]['timeline'][stat_name]    
 
     def timeline_file(self, stat_name, *args, **kwargs):
@@ -191,6 +193,3 @@ class LeagueTimelineFile(LeagueFile):
     def timeline_xppermin(self):
         dict_of_values = self.timeline_file("xpPerMinDeltas")
         return dict_of_values
-
-
-    
