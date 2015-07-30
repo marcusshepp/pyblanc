@@ -15,23 +15,25 @@ class BackEnd(object):
     Only instantiate League's subclasses.
     """
 
-    def __init__(self, api_key=None, s=0):
+    api_key = ""
+    summoner = 0
+
+    def __init__(self, api_key, summoner):
         """ Initialize obj with debug = False """
-        self._api_key = api_key
-        self._summoner += s if s else 0
+        self.api_key = api_key
+        self.summoner = summoner
+        self.request_data = self.match_history_request()
 
     def __unicode__(self):
         """ Useful for displaying `LeagueStats` as on obj. """
         return u"PyBlanc object instance. Summoner: {}".format(self.summoner)
 
-    @staticmethod
-    def get_request(url, api_key):
+    def get_request(self, url):
         url += "?api_key={0}".format(self.api_key)
         request = urll.urlopen(url)
         parsed = json.loads(request.read())
         return parsed
 
-    @classmethod
     def match_history_request(self):
         """ Makes a request to League servers and returns parsed JSON data."""
         url = "https://na.api.pvp.net/api/lol/na/v2.2/matchhistory/{0}".format(self.summoner)
@@ -49,6 +51,7 @@ class League(BackEnd):
         super(League, self).__init__(*args, **kwargs)
         self.SETTINGS = {}
         self.SETTINGS['champs'] = util_ez.champ_strings()
+        self.SETTINGS['champ_ids'] = util_ez.champ_string_int()
 
 
 class LeagueFile(League):
@@ -98,7 +101,13 @@ class LeagueStat(League):
         winoverlose
         get_champion_id
         all_champion_ids
+        cs_per_min
+        xp_per_min
     """
+
+    def __unicode__(self):
+        return u"pyblanc.LeagueStat object instance. Summoner: {summ}".format(
+            summ=self.summoner)
      
     def get_stat(self, game_number, stat_name):
         """ Returns a `stat`. """
@@ -106,7 +115,7 @@ class LeagueStat(League):
         return parsed['matches'][game_number]['participants'][0]['stats'][stat_name]
         
     def all_minions_killed(self):
-        """ Returns an array that can be used for data visualization. """
+        """ Returns an array of minionsKilled. """
         scores = []
         for i in range(0, 10):
             scores.append(self.get_stat(int(i), "minionsKilled"))
@@ -122,6 +131,11 @@ class LeagueStat(League):
             total_creep_count+=total[j]
         return total_creep_count/10
 
+    def winsandloses(self):
+        """ Returns wins and loses. """ 
+        wl = [self.get_stat(x, "winner") for x in xrange(10)]
+        return wl
+
     def winoverlose(self):
         """ Returns the win/lose ratio. """ 
         counter, num_of_wins, num_of_lose = 0, 0, 0
@@ -136,11 +150,98 @@ class LeagueStat(League):
         parsed = self.match_history_request()
         return parsed['matches'][game_number]['participants'][0]['championId']
     
-    def all_champion_ids(self):
-        list_of_champion_ids = []
+    def all_champions(self):
+        container = []
         for game_number in range(10):
-            list_of_champion_ids.append(self.get_champion_id(game_number))
-        return list_of_champion_ids
+            container.append(self.get_champion_id(game_number))
+        for i in xrange(10):
+            container[i] = util_ez.champion_id_to_str(container[i])
+        return container
+
+    def get_timeline(self, game_number, stat_name):
+        """ Returns a `timeline`. """
+        parsed = self.request_data
+        return parsed['matches'][game_number]['participants'][0]['timeline'][stat_name]
+    
+    def cs_per_min(self):
+        """
+        :returns:
+        [{u'zeroToTen': 6.81, u'tenToTwenty': 5.9},...]
+        """
+        x = [self.get_timeline(i, "creepsPerMinDeltas") for i in xrange(10)]
+        return x
+
+    def xp_per_min(self):
+        """
+        :returns:
+        [{u'zeroToTen': 6.81, u'tenToTwenty': 5.9},...]
+        """
+        x = [self.get_timeline(i, "xpPerMinDeltas") for i in xrange(10)]
+        return x
+    
+    def damage_dealt_to_champions(self):
+        """
+        :returns:
+        [21520, 35665, 28709,...]
+        """
+        x = [self.get_stat(i, "totalDamageDealtToChampions") for i in xrange(10)]
+        return x
+    
+    def first_blood(self):
+        """
+        :returns:
+        [False, True,...]
+        """
+        x = [self.get_stat(i, "firstBloodKill") for i in xrange(10)]
+        return x
+    
+    def gold_earned(self):
+        """
+        :returns:
+        [False, True,...]
+        """
+        x = [self.get_stat(i, "goldEarned") for i in xrange(10)]
+        return x
+        
+    def longest_killing_spree(self):
+        """
+        :returns:
+        []
+        """
+        x = [self.get_stat(i, "largestKillingSpree") for i in xrange(10)]
+        return x
+
+    def largest_multikill(self):
+        """
+        :returns:
+        []
+        """
+        x = [self.get_stat(i, "largestMultiKill") for i in xrange(10)]
+        return x
+    
+    def wards_placed(self):
+        """
+        :returns:
+        []
+        """
+        x = [self.get_stat(i, "wardsPlaced") for i in xrange(10)]
+        return x
+    
+    def items(self):
+        """
+        :returns:
+        []
+        """
+        x = [self.get_stat(i, "wardsPlaced") for i in xrange(10)]
+        return x
+
+    def teamkills(self):
+        """
+        :returns:
+        []
+        """
+        x = [self.get_stat(i, "wardsPlaced") for i in xrange(10)]
+        return x
 
 
 class LeagueTimelineFile(LeagueFile):
