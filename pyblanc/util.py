@@ -9,6 +9,11 @@ def champ_string_int():
 	# returns: {"Aatrox": 266, ...}
 	return dict((name, eval(name)) for name in CHAMPION_STRINGS)
 
+def champion_id_to_str(given_id):
+	for name, value in champ_string_int().iteritems():
+		if value == given_id:
+			return name
+
 Aatrox = 266
 Ahri = 103
 Akali = 84
