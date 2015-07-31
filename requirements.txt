@@ -1,4 +1,5 @@
 numpy
 pandas
-
+requests
+requests_cache
 
