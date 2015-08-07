@@ -1,4 +1,3 @@
-import os
 import math
 from datetime import date
 
@@ -9,14 +8,11 @@ import util as util_ez
 
 
 class League(BackEnd):
-    """ Security layer. """
+    """ Base League Object. """
 
-    def __init__(self, *args, **kwargs):
-        super(League, self).__init__(*args, **kwargs)
-        self.SETTINGS = {}
-        self.SETTINGS['champs'] = util_ez.champ_strings()
-        self.SETTINGS['champ_ids'] = util_ez.champ_string_int()
-    
+    class Meta:
+        abstract = True
+
 
 class LeagueStat(League):
     """ 
