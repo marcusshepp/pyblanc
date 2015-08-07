@@ -4,6 +4,10 @@ https://packaging.python.org/en/latest/distributing.html
 https://github.com/pypa/sampleproject
 """
 from setuptools import setup
+from pip.req import parse_requirements
+
+install_reqs = parse_requirements('requirements.txt', session=uuid.uuid1())
+reqs = [str(req.req) for req in install_reqs]
 
 setup(
     name='pyblanc',
@@ -28,9 +32,5 @@ setup(
         'Programming Language :: Python :: 2.7',
     ],
     keywords='',
-    install_requires=[
-        'numpy',
-        'requests',
-        'requests_cache',
-    ],
+    install_requires=reqs,
 )
