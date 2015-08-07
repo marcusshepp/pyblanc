@@ -3,6 +3,7 @@ See:
 https://packaging.python.org/en/latest/distributing.html
 https://github.com/pypa/sampleproject
 """
+import uuid
 from setuptools import setup
 from pip.req import parse_requirements
 
