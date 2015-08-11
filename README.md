@@ -5,14 +5,15 @@
 ```python
 
 >>> from pyblanc import LeagueStat
->>> cls = LeagueStat(summoner='foo', api_key='bar')
->>> average_cs = cls.average_cs()
->>> print averge_cs
+>>> ls = LeagueStat(summoner='foo')
+>>> average_cs = ls.average_cs()
+>>> averge_cs
 35.5 
-
+>>> ls.kills()
+[12, 5, 7, 15, 9, 9, 13, 0, 11, 3]
 >>> from pyblanc import LeagueTimelineFile
->>> cls = LeagueTimelineFile(summoner='bar', api_key='foo', path_to_data="path_str")
->>> cls.stats_to_file() # files are named "datetime.date.today().json"
->>> cls.timeline_cspermin() 
+>>> lf = LeagueTimelineFile(summoner='bar')
+>>> lf.stats_to_file() # files are named "datetime.date.today().json"
+>>> lf.timeline_cspermin() 
 {"zeroToTen": 12, "tenToTwenty": 20, "twentyToThirty", 30}
 ```
