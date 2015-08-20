@@ -13,9 +13,6 @@
 35.5 
 >>> ls.kills()
 [12, 5, 7, 15, 9, 9, 13, 0, 11, 3]
->>> from pyblanc import LeagueTimelineFile
->>> lf = LeagueTimelineFile(summoner='bar')
->>> lf.stats_to_file() # files are named "datetime.date.today().json"
->>> lf.timeline_cspermin() 
+>>> ls.cs_per_min() 
 {"zeroToTen": 12, "tenToTwenty": 20, "twentyToThirty", 30}
 ```
