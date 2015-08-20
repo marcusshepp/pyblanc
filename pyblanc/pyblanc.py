@@ -49,8 +49,6 @@ class LeagueStat(League):
         
     def all_minions_killed(self):
         """ Returns an array of minionsKilled. """
-        scores = []
-        for i in range(0, 10):
         scores = [self.get_stat(int(i), "minionsKilled") for i in xrange(10)]
         return scores
 
@@ -58,11 +56,11 @@ class LeagueStat(League):
         """ Returns the average creep score for the last ten games. """
         total = []
         total_creep_count = 0
-        for i in range(0, 10):
+        for i in xrange(10):
             total.append(self.get_stat(int(i), "minionsKilled"))
-        for j in range(0, len(total)):
-            total_creep_count+=total[j]
-        return total_creep_count/10
+        for j in xrange(10):
+            total_creep_count += total[j]
+        return total_creep_count / 10
         total = [self.get_stat(int(i), "minionsKilled") for i in xrange(10)]
         for j in xrange(10):
             total_creep_count += total[j]
