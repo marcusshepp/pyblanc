@@ -54,17 +54,8 @@ class LeagueStat(League):
 
     def average_cs(self):
         """ Returns the average creep score for the last ten games. """
-        total = []
-        total_creep_count = 0
-        for i in xrange(10):
-            total.append(self.get_stat(int(i), "minionsKilled"))
-        for j in xrange(10):
-            total_creep_count += total[j]
-        return total_creep_count / 10
-        total = [self.get_stat(int(i), "minionsKilled") for i in xrange(10)]
-        for j in xrange(10):
-            total_creep_count += total[j]
-        return total_creep_count / 10
+        total = sum([self.get_stat(int(i), "minionsKilled") for i in xrange(10)])
+        return total / 10
 
     def winsandloses(self):
         """ Returns wins and loses. """ 
