@@ -6,7 +6,7 @@
 ######Example usage
 ```python
 
->>> from pyblanc import LeagueStat
+>>> from pyblanc.pyblanc import LeagueStat
 >>> ls = LeagueStat(summoner='foo')
 >>> average_cs = ls.average_cs()
 >>> averge_cs
