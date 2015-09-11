@@ -22,17 +22,24 @@ setup(
     author='Marcus Shepherd',
     author_email='sheph2mj@cmich.edu',
     license=None,
+    platforms="any",
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
         #   3 - Alpha
         #   4 - Beta
         #   5 - Production/Stable
+        'Programming Language :: Python',
+        'Natural Language :: English',
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
+        'Operating System :: OS Independent',
+        'Intended Audience :: Developers',
+        'Environment :: Web Environment',
         'Topic :: Software Development :: Build Tools',
         'Programming Language :: Python :: 2.7',
     ],
     keywords='',
-    install_requires=reqs,
+    install_requires=[
+    ],
 
 )
