@@ -1,7 +1,7 @@
 import os
 import json
 
-from .pyblanc import League
+from pyblanc import League
 
 
 class LeagueFile(League):
@@ -12,13 +12,9 @@ class LeagueFile(League):
     path_to_data -> type: str, description: absolute path containing JSON
     """
 
-    def __init__(self, path_to_data):
-        super(League, self).__init__()
-        self.path_to_data = str(path_to_data)
-    
-    def stats_from_file(self):
+    def stats_from_file(self, path_to_data):
         """ Returns dict of data from a file. """
-        path = r'{}'.format(self.path_to_data)  
+        path = r'{}'.format(path_to_data)  
         for dir_entry in os.listdir(path):
             dir_entry_path = os.path.join(path, dir_entry)
             if os.path.isfile(dir_entry_path):
@@ -30,8 +26,8 @@ class LeagueFile(League):
     
     def stats_to_file(self, relative_path, file_name):
         """ Writes match history to a file in a given location. """
-        parsed, file_name = self.get_data(), date.today()
-        complete_path = os.path.abspath("{0}{1}.json".format(relative_path, file_name))
+        parsed = self.get_data()
+        complete_path = os.path.abspath("{0}/{1}.json".format(relative_path, file_name))
         if os.path.isfile(complete_path):
             file_name = "{}-duplicate".format(date.today())
             complete_path = os.path.abspath("{0}{1}.json".format(relative_path, file_name))
@@ -58,7 +54,7 @@ class LeagueTimelineFile(LeagueFile):
         """ Returns the `timeline` data for a given stat, type: dict. """
         matches = self.stats_from_file("{}".format(self.path_to_data))
         timeline = {}
-        for n in range(len(matches)):
+        for n in xrange(10):
             timeline[n] = matches[n]['participants'][0]['timeline'][stat_name]
         return timeline
     
@@ -80,7 +76,7 @@ class LeagueTimelineFile(LeagueFile):
         a, pika = self.timeline_file("creepsPerMinDeltas"), {}
         if time_value:
             for i, j in a.iteritems():
-                for num in range(len(i)):
+                for num in xrange(10):
                     pika[i] = a[i][time_value]
                     return pika # {game_num: cs}
         return a

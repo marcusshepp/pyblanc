@@ -5,8 +5,6 @@ import math
 import operator
 from datetime import date
 
-import numpy as np
-
 from lbonevnine.lbonevnine import BackEnd
 import util as util_ez
 

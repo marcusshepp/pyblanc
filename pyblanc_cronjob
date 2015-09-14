@@ -1,0 +1,3 @@
+# Crontab for pyblanc
+# min hour dom mon dow user command
+* 1 * * * /usr/bin/python ~/pyblanc/pyblanc/lvl_one_shaco.py >> ~/pyblanc/cron_log
