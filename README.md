@@ -2,10 +2,10 @@
 #### Get the data you want, quickly.
 
 ######
+---------------------
 
 Quick Start:
 
----------------------
 `pip install pyblanc`
 
 `python`
