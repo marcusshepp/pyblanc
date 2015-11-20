@@ -5,7 +5,9 @@
 
 Quick Start:
 `pip install pyblanc`
+
 `python`
+
 >>> from pyblanc.pyblanc import LeagueStat
 >>> ls = LeagueStat(summoner='foo')
 >>> average_cs = ls.average_cs()
